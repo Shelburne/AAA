@@ -188,26 +188,25 @@ MoveEval minMax(Board the_board,int player,int move,int depth){
 	}
 	if (win_state){
 		int table[2][3] = {{-1,1,0},{1,-1,0}};
-		//cout<<colors[win_state%3]<<"<"<<win_state%3<<">"<<colors[0];
-		//cout<<"<"<<win_state%3<<">"<<colors[player]<<")"<<colors[0];
+		
 		string prediction = "WTL";
 		win_state= table[player-1][win_state-1];
 		cout<<"<"<<prediction[win_state+1]<<">"<<colors[player]<<")"<<colors[0];
-		//cout<<"<"<<win_state<<">"<<colors[0]<<")";
+		
 		return MoveEval(move,win_state);
 	}
 	int sFlag=true;
 	MoveEval best_move;
 
 	for(int m=0;m<9;m++){
-		//cout<<m;
+		
 		if(!the_board.ar[m]){
 			if(!sFlag){
 				cout<<",";
 			}
 			cout<< colors[OPP] << m << "("<<colors[0];
 			MoveEval test_move = minMax(the_board,OPP,m,depth-1).fCOW();
-			//test_move.aMove=m;
+			
 			if(sFlag){
 				best_move = test_move;
 				sFlag = false;
@@ -227,16 +226,11 @@ MoveEval minMax(Board the_board,int player,int move,int depth){
 }
 
 int initMinMax(Board the_board, int player, int max_depth){
-	
-	
-	
-	
 	bool sFlag=true;
 	MoveEval best_move;
 	string colors[3] = {"\033[0m","\033[91m","\033[36m"};
+	
 	for(int m=0;m<9;m++){
-		
-		
 		if(!the_board.ar[m]){
 			
 			cout<< colors[player]<< m <<"["<<colors[0];
@@ -244,6 +238,7 @@ int initMinMax(Board the_board, int player, int max_depth){
 			test_move.aMove=m;
 			string prediction = "LTW";
 			cout<<"]{"<<prediction[test_move.COW+1]<<"}\n";
+			
 			if(test_move.COW==1){
 				return m;
 			}
@@ -252,7 +247,6 @@ int initMinMax(Board the_board, int player, int max_depth){
 				sFlag = false;
 			}
 			else{
-				
 				// the second condition for this if makes it so it can randomly pick a move if they have equal COW values. This makes minmax indeterministic, adding a bit of flavor to the bot.
 				// this is the most interesting in the case of the hard bot; due to it's depth limiter, it can actually make mistakes during the late game that can allow the player to win given the right circumstances 
 				if (test_move.COW>best_move.COW || ( test_move.COW>=best_move.COW && std::rand()%2 )){
@@ -355,7 +349,6 @@ class Player {
 				}
 				the_board.dispBoard();	
 			}
-
 		return the_board;
 	}
 };
@@ -365,7 +358,7 @@ class TicTacToe{
 		Player players[2];
 		Board the_board;
 		int turn=0;
-		
+	
 		TicTacToe(){
 			for(int i=0;i<2;i++){
 				players[i]=Player();
@@ -404,7 +397,6 @@ class TicTacToe{
 			}
 			the_board.dispBoard(false);
 			the_board.~Board();
-			
 		}
 		
 		void goGame(){
@@ -417,41 +409,6 @@ class TicTacToe{
 		~TicTacToe(){}
 		
 };
-
-bool stringComp(string string1, string string2, bool do_case){
-	
-	if (string1.length()!=string2.length()){
-		return false;
-	}
-	if (do_case){
-		for(int i=0;i<string1.length();i++){
-			if(string1[i]!=string2[i]){
-				return false;
-			}
-		}
-	}
-	else{
-		for(int i=0;i<string1.length();i++){
-			if(tolower(string1[i])!=tolower(string2[i])){
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-bool ofResp(string inp, string isof[], int num_check, bool do_case){
-	//ofResp() is used to check if a given user input "inp" matches one of set of expected inputs in "isof", i.e. you might check if response is one of {"yes", "y", "no", "n"}
-	//the comparisons are done in order of "isof" so make sure to order it by highest expected input for maximum performance
-		
-	
-	for(int i=0;i<num_check;i++){
-		if(stringComp(inp,isof[i],do_case)){
-			return true;
-		}
-	}
-	return false;
-}
 
 int main(){
 	std::srand(std::time(0));
